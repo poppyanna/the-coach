@@ -755,7 +755,8 @@ function itagHtml(intensity) {
 }
 
 function kitHtml(kit,small) {
-  return kit.map(k=>`<div class="kit-item${small?' style="font-size:.7rem"':'}">${KIT_ICONS[k]||'•'} ${k}</div>`).join('');
+  const s=small?' style="font-size:.7rem"':'';
+  return kit.map(k=>`<div class="kit-item"${s}>${KIT_ICONS[k]||'•'} ${k}</div>`).join('');
 }
 
 function renderToday() {
