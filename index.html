@@ -284,12 +284,12 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
     </div>
   </div>
   <nav class="nav">
-    <button class="nav-tab active" onclick="showTab('today')">Today</button>
-    <button class="nav-tab" onclick="showTab('log')">Log</button>
-    <button class="nav-tab" onclick="showTab('weights')">Weights</button>
-    <button class="nav-tab" onclick="showTab('history')">History</button>
-    <button class="nav-tab" onclick="showTab('progress')">Progress</button>
-    <button class="nav-tab" onclick="showTab('goal')">Goal</button>
+    <button class="nav-tab active" data-tab="today">Today</button>
+    <button class="nav-tab" data-tab="log">Log</button>
+    <button class="nav-tab" data-tab="weights">Weights</button>
+    <button class="nav-tab" data-tab="history">History</button>
+    <button class="nav-tab" data-tab="progress">Progress</button>
+    <button class="nav-tab" data-tab="goal">Goal</button>
   </nav>
   <div class="scroll">
 
@@ -298,11 +298,11 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
       <div class="vibe-card">
         <div class="card-lbl">Check in — be honest</div>
         <div class="vibe-row">
-          <button class="vibe-btn" onclick="setVibe(1,this)"><span class="vibe-emoji">💀</span><span class="vibe-lbl">Dead</span></button>
-          <button class="vibe-btn" onclick="setVibe(2,this)"><span class="vibe-emoji">😶</span><span class="vibe-lbl">Meh</span></button>
-          <button class="vibe-btn" onclick="setVibe(3,this)"><span class="vibe-emoji">😐</span><span class="vibe-lbl">OK</span></button>
-          <button class="vibe-btn" onclick="setVibe(4,this)"><span class="vibe-emoji">💪</span><span class="vibe-lbl">Good</span></button>
-          <button class="vibe-btn" onclick="setVibe(5,this)"><span class="vibe-emoji">🔥</span><span class="vibe-lbl">Fired</span></button>
+          <button class="vibe-btn" data-vibe="1"><span class="vibe-emoji">💀</span><span class="vibe-lbl">Dead</span></button>
+          <button class="vibe-btn" data-vibe="2"><span class="vibe-emoji">😶</span><span class="vibe-lbl">Meh</span></button>
+          <button class="vibe-btn" data-vibe="3"><span class="vibe-emoji">😐</span><span class="vibe-lbl">OK</span></button>
+          <button class="vibe-btn" data-vibe="4"><span class="vibe-emoji">💪</span><span class="vibe-lbl">Good</span></button>
+          <button class="vibe-btn" data-vibe="5"><span class="vibe-emoji">🔥</span><span class="vibe-lbl">Fired</span></button>
         </div>
         <div class="coach-inline" id="vibe-msg">Select your vibe to get today's prescription.</div>
       </div>
@@ -333,9 +333,9 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
         <div class="kit-items" id="today-kit-items"></div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="showTab('log')">→ Log Rowing</button>
-        <button class="btn btn-secondary" onclick="showTab('weights')">→ Log Weights</button>
-        <button class="btn btn-ghost" id="skip-btn" onclick="quickSkip()" style="display:none">Log Skip</button>
+        <button class="btn btn-primary" id="btn-log-rowing">→ Log Rowing</button>
+        <button class="btn btn-secondary" id="btn-log-weights">→ Log Weights</button>
+        <button class="btn btn-ghost" id="skip-btn" style="display:none">Log Skip</button>
       </div>
       <div class="tmrw-card">
         <div class="tmrw-head">
@@ -355,14 +355,14 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
       <div class="sec-title">Log Rowing</div>
       <div class="scan-lbl">Scan screens — tap to photograph or choose from library</div>
       <div class="scan-row">
-        <div class="scan-zone" id="pm5-zone" ondragover="event.preventDefault()" ondrop="dropFile(event,'pm5')">
-          <input type="file" accept="image/*" onchange="scanFile(this.files[0],'pm5')" id="pm5-input">
+        <div class="scan-zone" id="pm5-zone">
+          <input type="file" accept="image/*" id="pm5-input">
           <span class="scan-icon" id="pm5-icon">🖥️</span>
           <div class="scan-title" id="pm5-title">PM5 Screen</div>
           <div class="scan-sub" id="pm5-sub">Splits, distance, rate</div>
         </div>
-        <div class="scan-zone" id="hr-zone" ondragover="event.preventDefault()" ondrop="dropFile(event,'hr')">
-          <input type="file" accept="image/*" onchange="scanFile(this.files[0],'hr')" id="hr-input">
+        <div class="scan-zone" id="hr-zone">
+          <input type="file" accept="image/*" id="hr-input">
           <span class="scan-icon" id="hr-icon">❤️</span>
           <div class="scan-title" id="hr-title">HR / Watch</div>
           <div class="scan-sub" id="hr-sub">Apple Watch summary</div>
@@ -374,7 +374,7 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
         <div class="ex-grid" id="ex-grid"></div>
         <div id="iv-list"></div>
         <div class="ex-note" id="ex-note"></div>
-        <div style="margin-top:.45rem"><button class="btn btn-ghost" style="font-size:.64rem;padding:.3rem .65rem" onclick="clearScans()">✕ Clear scans</button></div>
+        <div style="margin-top:.45rem"><button class="btn btn-ghost" id="btn-clear-scans" style="font-size:.64rem;padding:.3rem .65rem">✕ Clear scans</button></div>
       </div>
       <div class="div-lbl">or fill in manually</div>
       <div class="form-card">
@@ -383,7 +383,7 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
           <div class="row2">
             <div class="fg"><label>Date</label><input type="date" id="f-date"></div>
             <div class="fg"><label>Type</label>
-              <select id="f-type" onchange="toggleErgFields()">
+              <select id="f-type">
                 <option value="erg">Ergo</option>
                 <option value="water">Water (1x)</option>
                 <option value="skip">Skipped</option>
@@ -419,8 +419,8 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
           </div>
           <div class="fg"><label>Notes</label><textarea id="f-notes" placeholder="How did it go?"></textarea></div>
           <div class="btn-row" style="margin-bottom:0">
-            <button class="btn btn-primary" onclick="saveSession()">Save Session</button>
-            <button class="btn btn-secondary" onclick="getCoachFeedback()">Coach Feedback</button>
+            <button class="btn btn-primary" id="btn-save-session">Save Session</button>
+            <button class="btn btn-secondary" id="btn-coach-feedback">Coach Feedback</button>
           </div>
         </div>
       </div>
@@ -448,10 +448,10 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
             <div style="display:flex;gap:.5rem">
               <input type="text" id="new-exercise-name" placeholder="e.g. Hip Thrust" style="flex:1" list="exercise-suggestions">
               <datalist id="exercise-suggestions"></datalist>
-              <button class="btn btn-secondary btn-sm" onclick="addExercise()">+ Add</button>
+              <button class="btn btn-secondary btn-sm" id="btn-add-exercise">+ Add</button>
             </div>
           </div>
-          <button class="btn btn-primary btn-full" onclick="saveGymSession()">Save Gym Session</button>
+          <button class="btn btn-primary btn-full" id="btn-save-gym">Save Gym Session</button>
         </div>
       </div>
 
@@ -481,7 +481,7 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
         <div class="chart-title">Ergo Split Trend</div>
         <div class="chart" id="split-chart"><div class="empty"><p style="font-size:.8rem">Log ergo sessions to see trend</p></div></div>
       </div>
-      <button class="btn btn-secondary btn-full" onclick="getProgressReview()" style="margin-bottom:.85rem" id="review-btn">Get Weekly Review from Coach</button>
+      <button class="btn btn-secondary btn-full" style="margin-bottom:.85rem" id="review-btn">Get Weekly Review from Coach</button>
       <div id="progress-coach" class="coach-box" style="display:none">
         <div class="coach-lbl">The Coach — Weekly Review</div>
         <div class="coach-text" id="progress-coach-text"></div>
@@ -504,7 +504,7 @@ hr{border:none;border-top:1px solid var(--border);margin:.85rem 0}
             <div class="fg"><label>Race Date</label><input type="date" id="g-date"></div>
             <div class="fg"><label>Target Split /500m</label><input type="text" id="g-split" placeholder="e.g. 1:58"></div>
           </div>
-          <button class="btn btn-primary" onclick="saveGoal()">Save Goal</button>
+          <button class="btn btn-primary" id="btn-save-goal">Save Goal</button>
         </div>
       </div>
       <div class="sec-title" style="font-size:1rem">Milestones</div>
@@ -611,6 +611,47 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('w-date').value = todayStr();
   updateExerciseSuggestions();
   renderAll();
+
+  // Nav tabs
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.addEventListener('click', () => showTab(btn.dataset.tab));
+  });
+
+  // Vibe buttons
+  document.querySelectorAll('.vibe-btn').forEach(btn => {
+    btn.addEventListener('click', () => setVibe(parseInt(btn.dataset.vibe), btn));
+  });
+
+  // Today panel
+  document.getElementById('btn-log-rowing').addEventListener('click', () => showTab('log'));
+  document.getElementById('btn-log-weights').addEventListener('click', () => showTab('weights'));
+  document.getElementById('skip-btn').addEventListener('click', quickSkip);
+
+  // Scan zones
+  const pm5Input = document.getElementById('pm5-input');
+  const hrInput = document.getElementById('hr-input');
+  pm5Input.addEventListener('change', () => { if(pm5Input.files[0]) scanFile(pm5Input.files[0],'pm5'); });
+  hrInput.addEventListener('change', () => { if(hrInput.files[0]) scanFile(hrInput.files[0],'hr'); });
+  document.getElementById('pm5-zone').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('pm5-zone').addEventListener('drop', e => { e.preventDefault(); if(e.dataTransfer.files[0]) scanFile(e.dataTransfer.files[0],'pm5'); });
+  document.getElementById('hr-zone').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('hr-zone').addEventListener('drop', e => { e.preventDefault(); if(e.dataTransfer.files[0]) scanFile(e.dataTransfer.files[0],'hr'); });
+  document.getElementById('btn-clear-scans').addEventListener('click', clearScans);
+
+  // Log form
+  document.getElementById('f-type').addEventListener('change', toggleErgFields);
+  document.getElementById('btn-save-session').addEventListener('click', saveSession);
+  document.getElementById('btn-coach-feedback').addEventListener('click', getCoachFeedback);
+
+  // Weights
+  document.getElementById('btn-add-exercise').addEventListener('click', addExercise);
+  document.getElementById('btn-save-gym').addEventListener('click', saveGymSession);
+
+  // Progress
+  document.getElementById('review-btn').addEventListener('click', getProgressReview);
+
+  // Goal
+  document.getElementById('btn-save-goal').addEventListener('click', saveGoal);
 });
 
 function renderAll() {
@@ -1069,8 +1110,8 @@ function showTab(name) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const idx={today:0,log:1,weights:2,history:3,progress:4,goal:5}[name];
-  if(idx!==undefined) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  const activeTab = document.querySelector(`.nav-tab[data-tab="${name}"]`);
+  if(activeTab) activeTab.classList.add('active');
   if(name==='history') renderHistory();
   if(name==='progress') renderProgress();
   if(name==='weights'){renderExercisesLog();renderWeightsProgress();}
